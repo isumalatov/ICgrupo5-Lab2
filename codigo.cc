@@ -99,21 +99,23 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
 
     // Crear una imagen de ejemplo más grande
-    Image img = createRandomImage(100, 100);
+    for (int i = 0; i < 15; i++)
+    {
+        Image img = createRandomImage(25, 25);
 
-    std::cout << "Imagen original:\n";
-    printImage(img);
+        std::cout << "Imagen original:\n";
+        printImage(img);
 
-    Image smoothedImg = smoothImage(img);
+        Image smoothedImg = smoothImage(img);
 
-    std::cout << "\nImagen suavizada:\n";
-    printImage(smoothedImg);
+        std::cout << "\nImagen suavizada:\n";
+        printImage(smoothedImg);
 
-    Image grayscaleImg = convertToGrayscale(smoothedImg);
+        Image grayscaleImg = convertToGrayscale(smoothedImg);
 
-    std::cout << "\nImagen en escala de grises:\n";
-    printImage(grayscaleImg);
-
+        std::cout << "\nImagen en escala de grises:\n";
+        printImage(grayscaleImg);
+    }
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
