@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <cstdlib> // para std::rand y std::srand
-#include <ctime>   // para std::time
-#include <chrono>  // para std::chrono::high_resolution_clock y std::chrono::duration_cast
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
 
 struct Pixel
 {
@@ -13,7 +13,7 @@ using Image = std::vector<std::vector<Pixel>>;
 
 Image createRandomImage(int width, int height)
 {
-    std::srand(std::time(nullptr)); // usar la hora actual como semilla para el generador de números aleatorios
+    std::srand(std::time(nullptr));
 
     Image img(width, std::vector<Pixel>(height));
     for (auto &row : img)
@@ -98,28 +98,48 @@ int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
 
-    // Crear una imagen de ejemplo más grande
-    for (int i = 0; i < 15; i++)
+    std::vector<Image> originalImages;  // Vector para almacenar las imágenes originales
+    std::vector<Image> smoothedImages;  // Vector para almacenar las imágenes suavizadas
+    std::vector<Image> grayscaleImages; // Vector para almacenar las imágenes en escala de grises
+
+    // Crear imágenes
+    for (int i = 0; i < 10; i++)
     {
-        Image img = createRandomImage(25, 25);
+        Image img = createRandomImage(20, 20);
+        originalImages.push_back(img);
+    }
 
+    // Suavizar imágenes
+    for (int i = 0; i < 10; i++)
+    {
+        Image smoothedImg = smoothImage(originalImages[i]);
+        smoothedImages.push_back(smoothedImg);
+    }
+
+    // Convertir a escala de grises
+    for (int i = 0; i < 10; i++)
+    {
+        Image grayscaleImg = convertToGrayscale(smoothedImages[i]);
+        grayscaleImages.push_back(grayscaleImg);
+    }
+
+    // Imprimir imágenes
+    for (int i = 0; i < 10; i++)
+    {
         std::cout << "Imagen original:\n";
-        printImage(img);
-
-        Image smoothedImg = smoothImage(img);
+        printImage(originalImages[i]);
 
         std::cout << "\nImagen suavizada:\n";
-        printImage(smoothedImg);
-
-        Image grayscaleImg = convertToGrayscale(smoothedImg);
+        printImage(smoothedImages[i]);
 
         std::cout << "\nImagen en escala de grises:\n";
-        printImage(grayscaleImg);
+        printImage(grayscaleImages[i]);
     }
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 
-    std::cout << "\nTiempo de ejecucion: " << duration << " milisegundos.\n";
+    std::cout << "\nTiempo de ejecución: " << duration << " milisegundos.\n";
 
     return 0;
 }
